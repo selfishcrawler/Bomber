@@ -12,15 +12,16 @@ namespace BomberCore
             private set => Picture = value;
         }
 
-        public int OffsetX { get; private set; }
-        public int OffsetY { get; private set; }
+        public int OffsetX      { get; private set; }
+        public int OffsetY      { get; private set; }
+        public Point Position   { get => position;  }
 
         Bitmap[,] Sprite;
-        Point position;
         Direction currentDirection;
         int Animation;
         bool MoveAllowed;
         Timer animationTimer;
+        Point position;
 
         public Player()
         {
@@ -36,7 +37,7 @@ namespace BomberCore
             currentDirection = Direction.None;
             Animation = 0;
             MoveAllowed = true;
-            animationTimer = new Timer(200);
+            animationTimer = new Timer(100);
             animationTimer.Elapsed += AnimationTimer_Elapsed;
             animationTimer.AutoReset = true;
         }
@@ -85,25 +86,27 @@ namespace BomberCore
         {
             if (!MoveAllowed)
                 return;
+            if (!Game.CanMove(this, direction))
+                return;
             MoveAllowed = false;
             Game.Map[position.X, position.Y] = null;
             switch (direction)
             {
                 case Direction.Down:
                     OffsetY = -65;
-                    position.Y += 1;
+                    position.Y++;
                     break;
                 case Direction.Left:
                     OffsetX = 65;
-                    position.X -= 1;
+                    position.X--;
                     break;
                 case Direction.Up:
                     OffsetY = 65;
-                    position.Y -= 1;
+                    position.Y--;
                     break;
                 case Direction.Right:
                     OffsetX = -65;
-                    position.X += 1;
+                    position.X++;
                     break;
             }
             Game.Map[position.X, position.Y] = this;

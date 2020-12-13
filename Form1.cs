@@ -17,8 +17,7 @@ namespace BomberCore
             
             for (int y = 0; y < Game.MapHeight; y++)
                 for (int x = 0; x < Game.MapWidth; x++)
-                    if (Game.Map[x, y] is not null)
-                        Game.Map[x, y].TellCoords(x, y);
+                    Game.Map[x, y]?.TellCoords(x, y);
             formPointer = this;
         }
 

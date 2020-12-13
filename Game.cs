@@ -39,6 +39,30 @@
 
         static GameObject[,] map;
 
+        public static bool CanMove(GameObject gObject, Direction moveDir)
+        {
+            switch(moveDir)
+            {
+                case Direction.Down:
+                    if (gObject.Position.Y + 1 >= MapHeight)
+                        return false;
+                    return true;
+                case Direction.Left:
+                    if (gObject.Position.X - 1 < 0)
+                        return false;
+                    return true;
+                case Direction.Up:
+                    if (gObject.Position.Y - 1 < 0)
+                        return false;
+                    return true;
+                case Direction.Right:
+                    if (gObject.Position.X + 1 >= MapWidth)
+                        return false;
+                    return true;
+            }
+            return true;
+        }
+
         public static int MapWidth
         {
             get => map.GetLength(1);
