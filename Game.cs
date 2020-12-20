@@ -31,9 +31,11 @@
             player = new Player();
             map = new GameObject[,]
             {
-                { null, null, null },
-                { null, player, null },
-                { null, null, null }
+                { null, null, null, null, null },
+                { null, player, null, new Wall(false), new Wall(false) },
+                { null, null, new Wall(false), null, null },
+                { null, null, null, null, null },
+                { null, null, null, null, null },
             };
         }
 
@@ -44,19 +46,19 @@
             switch(moveDir)
             {
                 case Direction.Down:
-                    if (gObject.Position.Y + 1 >= MapHeight)
+                    if (gObject.Position.Y + 1 >= MapHeight || Map[gObject.Position.X, gObject.Position.Y + 1] is Wall)
                         return false;
                     return true;
                 case Direction.Left:
-                    if (gObject.Position.X - 1 < 0)
+                    if (gObject.Position.X - 1 < 0 || Map[gObject.Position.X - 1, gObject.Position.Y] is Wall)
                         return false;
                     return true;
                 case Direction.Up:
-                    if (gObject.Position.Y - 1 < 0)
+                    if (gObject.Position.Y - 1 < 0 || Map[gObject.Position.X, gObject.Position.Y - 1] is Wall)
                         return false;
                     return true;
                 case Direction.Right:
-                    if (gObject.Position.X + 1 >= MapWidth)
+                    if (gObject.Position.X + 1 >= MapWidth || Map[gObject.Position.X + 1, gObject.Position.Y] is Wall)
                         return false;
                     return true;
             }

@@ -12,13 +12,13 @@ namespace BomberCore
         public Form1()
         {
             InitializeComponent();
-            DoubleBuffered = true;
             size = Properties.Resources.Grass.Width;
             
             for (int y = 0; y < Game.MapHeight; y++)
                 for (int x = 0; x < Game.MapWidth; x++)
                     Game.Map[x, y]?.TellCoords(x, y);
             formPointer = this;
+            ClientSize = new Size(Game.MapWidth * size, Game.MapHeight * size);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
