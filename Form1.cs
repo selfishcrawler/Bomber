@@ -30,7 +30,22 @@ namespace BomberCore
             for (int y = 0; y < Game.MapHeight; y++)
                 for (int x = 0; x < Game.MapWidth; x++)
                     if (Game.Map[x, y] is not null)
+                    {
+                        if (Game.Map[x, y] is Player && Game.Player.Bomb is not null)
+                        {
+                            Bomb bomb = Game.Player.Bomb;
+                            switch (Game.Player.Bomb.State)
+                            {
+                                case BombState.Preparing:
+                                    e.Graphics.DrawImage(bomb.Picture, new Point(bomb.BombLocation.X * bomb.Picture.Width, bomb.BombLocation.Y * bomb.Picture.Height));
+                                    break;
+                                case BombState.Exploding: // placeholder
+                                    e.Graphics.DrawImage(bomb.Picture, new Point(bomb.BombLocation.X * bomb.Picture.Width, bomb.BombLocation.Y * bomb.Picture.Height));
+                                    break;
+                            }
+                        }
                         e.Graphics.DrawImage(Game.Map[x, y].Picture, new Point(x * size + Game.Map[x, y].OffsetX, y * size + Game.Map[x, y].OffsetY));
+                    }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -39,19 +54,22 @@ namespace BomberCore
             {
                 case Keys.S:
                 case Keys.Down:
-                    Game.player.Move(Direction.Down);
+                    Game.Player.Move(Direction.Down);
                     break;
                 case Keys.W:
                 case Keys.Up:
-                    Game.player.Move(Direction.Up);
+                    Game.Player.Move(Direction.Up);
                     break;
                 case Keys.A:
                 case Keys.Left:
-                    Game.player.Move(Direction.Left);
+                    Game.Player.Move(Direction.Left);
                     break;
                 case Keys.D:
                 case Keys.Right:
-                    Game.player.Move(Direction.Right);
+                    Game.Player.Move(Direction.Right);
+                    break;
+                case Keys.Q:
+                    Game.Player.PlaceBomb();
                     break;
             }
         }

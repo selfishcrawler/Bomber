@@ -6,7 +6,7 @@ namespace BomberCore
     {
         public Bitmap Picture
         {
-            get => Destructible ? Properties.Resources.weakwall : Properties.Resources.wall;
+            get => Destructible ? Properties.Resources.Weakwall : Properties.Resources.Wall;
         }
 
         public int OffsetX          { get => 0; }

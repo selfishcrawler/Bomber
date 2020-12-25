@@ -28,11 +28,11 @@
 
         static Game()
         {
-            player = new Player();
+            Player = new Player();
             map = new GameObject[,]
             {
                 { null, null, null, null, null },
-                { null, player, null, new Wall(false), new Wall(false) },
+                { null, Player, null, new Wall(false), new Wall(false) },
                 { null, null, new Wall(false), null, null },
                 { null, null, null, null, null },
                 { null, null, null, null, null },
@@ -40,6 +40,15 @@
         }
 
         static GameObject[,] map;
+
+        public static void Explode(System.Drawing.Point location)
+        {
+            for (int i = -1; i < 2; i++)
+                for (int j = -1; j < 2; j++)
+                {
+                    //
+                }
+        }
 
         public static bool CanMove(GameObject gObject, Direction moveDir)
         {
@@ -74,7 +83,7 @@
             get => map.GetLength(0);
         }
 
-        public static Player player
+        public static Player Player
         {
             get;
             private set;

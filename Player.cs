@@ -15,6 +15,7 @@ namespace BomberCore
         public int OffsetX      { get; private set; }
         public int OffsetY      { get; private set; }
         public Point Position   { get => position;  }
+        public Bomb Bomb        { get; private set; }
 
         Bitmap[,] Sprite;
         Direction currentDirection;
@@ -40,6 +41,21 @@ namespace BomberCore
             animationTimer = new Timer(100);
             animationTimer.Elapsed += AnimationTimer_Elapsed;
             animationTimer.AutoReset = true;
+        }
+
+        public void PlaceBomb()
+        {
+            if (Bomb is not null || !MoveAllowed)
+                return;
+            Bomb = new Bomb(position);
+            Bomb.StateChanged += Bomb_StateChanged;
+        }
+
+        private void Bomb_StateChanged()
+        {
+            if (Bomb.State == BombState.Disposed)
+                Bomb = null;
+            Form1.formPointer.Invalidate();
         }
 
         public void Destroy()
