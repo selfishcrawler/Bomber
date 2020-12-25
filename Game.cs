@@ -1,4 +1,6 @@
-﻿namespace BomberCore
+﻿using System.Drawing;
+
+namespace BomberCore
 {
     public enum Direction
     {
@@ -18,6 +20,16 @@
                     Form1.formPointer.Invalidate();
                 }
             }
+
+            public GameObject this[Point p]
+            {
+                get => map[p.Y, p.X];
+                set
+                {
+                    map[p.Y, p.X] = value;
+                    Form1.formPointer.Invalidate();
+                }
+            }
         }
 
         private static MapIndexer indexer;
@@ -32,22 +44,22 @@
             map = new GameObject[,]
             {
                 { null, null, null, null, null },
-                { null, Player, null, new Wall(false), new Wall(false) },
+                { null, Player, null, new Wall(true), new Wall(false) },
                 { null, null, new Wall(false), null, null },
                 { null, null, null, null, null },
                 { null, null, null, null, null },
             };
+            Playing = true;
         }
 
         static GameObject[,] map;
 
-        public static void Explode(System.Drawing.Point location)
+        public static void StopGame()
         {
-            for (int i = -1; i < 2; i++)
-                for (int j = -1; j < 2; j++)
-                {
-                    //
-                }
+            Playing = false;
+            for (int y = 0; y < MapHeight; y++)
+                for (int x = 0; x < MapWidth; x++)
+                    Map[x, y] = null;
         }
 
         public static bool CanMove(GameObject gObject, Direction moveDir)
@@ -73,6 +85,8 @@
             }
             return true;
         }
+
+        public static bool Playing { get; private set; }
 
         public static int MapWidth
         {

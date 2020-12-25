@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Timers;
 
 namespace BomberCore
@@ -34,10 +35,12 @@ namespace BomberCore
 
         Timer PrepareTimer, ExplosionTimer;
         int Animation = 0;
+        List<Point> explosionMap;
 
         public Point BombLocation   { get; private set; }
         public BombState State      { get; private set; }
         public Bitmap Picture       { get => State == BombState.Preparing ? BombSprite[Animation] : ExplosionSprite[Animation]; }
+        public Point[] ExplosionMap { get => explosionMap.ToArray(); }
         public event System.Action StateChanged;
 
         public Bomb(Point location)
@@ -54,6 +57,7 @@ namespace BomberCore
 
             Animation = 0;
             State = BombState.Preparing;
+            explosionMap = new List<Point>();
             PrepareTimer.Start();
         }
 
@@ -61,10 +65,21 @@ namespace BomberCore
         {
             if (Animation == 2)
             {
-                Game.Explode(BombLocation);
                 Animation = 0;
                 State = BombState.Exploding;
                 PrepareTimer.Stop();
+
+
+                for (int i = -1; i < 2; i++)
+                    for (int j = -1; j < 2; j++)
+                        if (BombLocation.X + i >= 0 && BombLocation.X + i < Game.MapWidth && BombLocation.Y + j >= 0 && BombLocation.Y + j < Game.MapHeight)
+                        {
+                            if (Game.Map[BombLocation.X + i, BombLocation.Y + j] is not null)
+                                Game.Map[BombLocation.X + i, BombLocation.Y + j].Destroy();
+                            if (Game.Map[BombLocation.X + i, BombLocation.Y + j] is null)
+                                explosionMap.Add(new Point(BombLocation.X + i, BombLocation.Y + j));
+                        }
+
                 ExplosionTimer.Start();
                 return;
             }

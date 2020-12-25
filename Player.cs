@@ -38,7 +38,7 @@ namespace BomberCore
             currentDirection = Direction.None;
             Animation = 0;
             MoveAllowed = true;
-            animationTimer = new Timer(100);
+            animationTimer = new Timer(10);
             animationTimer.Elapsed += AnimationTimer_Elapsed;
             animationTimer.AutoReset = true;
         }
@@ -60,7 +60,7 @@ namespace BomberCore
 
         public void Destroy()
         {
-            throw new NotImplementedException();
+            Game.StopGame();
         }
 
         public void TellCoords(int x, int y)

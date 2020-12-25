@@ -21,7 +21,9 @@ namespace BomberCore
 
         public void Destroy()
         {
-            throw new System.NotImplementedException();
+            if (!Destructible)
+                return;
+            Game.Map[Position] = null;
         }
 
         public void TellCoords(int x, int y)

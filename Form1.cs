@@ -37,10 +37,11 @@ namespace BomberCore
                             switch (Game.Player.Bomb.State)
                             {
                                 case BombState.Preparing:
-                                    e.Graphics.DrawImage(bomb.Picture, new Point(bomb.BombLocation.X * bomb.Picture.Width, bomb.BombLocation.Y * bomb.Picture.Height));
+                                    e.Graphics.DrawImage(bomb.Picture, new Point(bomb.BombLocation.X * size, bomb.BombLocation.Y * size));
                                     break;
-                                case BombState.Exploding: // placeholder
-                                    e.Graphics.DrawImage(bomb.Picture, new Point(bomb.BombLocation.X * bomb.Picture.Width, bomb.BombLocation.Y * bomb.Picture.Height));
+                                case BombState.Exploding:
+                                    foreach (Point explosion in Game.Player.Bomb.ExplosionMap)
+                                        e.Graphics.DrawImage(bomb.Picture, new Point(explosion.X * size, explosion.Y * size));
                                     break;
                             }
                         }
@@ -50,6 +51,8 @@ namespace BomberCore
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (!Game.Playing)
+                return;
             switch (e.KeyCode)
             {
                 case Keys.S:
