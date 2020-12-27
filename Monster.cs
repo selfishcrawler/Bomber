@@ -21,7 +21,7 @@ namespace BomberCore
         {
             OffsetX = OffsetY = 0;
             currentDirection = Direction.None;
-            moveTimer = new Timer(50);
+            moveTimer = new Timer(10);
             moveTimer.AutoReset = true;
             moveTimer.Elapsed += MoveTimer_Elapsed;
             moveTimer.Start();
@@ -29,52 +29,57 @@ namespace BomberCore
 
         private void MoveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (OffsetX == OffsetY && OffsetY == 0)
+            lock (Game.Map)
             {
-                ChooseDirection();
-                Game.Map[position] = null;
-                switch (currentDirection)
+                if (OffsetX == OffsetY && OffsetY == 0)
                 {
-                    case Direction.Down:
-                        OffsetY = -65;
-                        position.Y++;
-                        break;
-                    case Direction.Left:
-                        OffsetX = 65;
-                        position.X--;
-                        break;
-                    case Direction.Up:
-                        OffsetY = 65;
-                        position.Y--;
-                        break;
-                    case Direction.Right:
-                        OffsetX = -65;
-                        position.X++;
-                        break;
+                    ChooseDirection();
+                    Game.Map[position] = null;
+                    switch (currentDirection)
+                    {
+                        case Direction.Down:
+                            OffsetY = -65;
+                            position.Y++;
+                            break;
+                        case Direction.Left:
+                            OffsetX = 65;
+                            position.X--;
+                            break;
+                        case Direction.Up:
+                            OffsetY = 65;
+                            position.Y--;
+                            break;
+                        case Direction.Right:
+                            OffsetX = -65;
+                            position.X++;
+                            break;
+                        case Direction.None:
+                            break;
+                    }
+                    if (Game.Map[position] is Player)
+                        Game.Map[position].Destroy();
+                    Game.Map[position] = this;
                 }
-                if (Game.Map[position] is Player)
-                    Game.Map[position].Destroy();
-                Game.Map[position] = this;
-            }
-            else
-            {
-                switch (currentDirection)
+                else
                 {
-                    case Direction.Down:
-                        OffsetY += 5;
-                        break;
-                    case Direction.Left:
-                        OffsetX -= 5;
-                        break;
-                    case Direction.Up:
-                        OffsetY -= 5;
-                        break;
-                    case Direction.Right:
-                        OffsetX += 5;
-                        break;
+                    switch (currentDirection)
+                    {
+                        case Direction.Down:
+                            OffsetY += 5;
+                            break;
+                        case Direction.Left:
+                            OffsetX -= 5;
+                            break;
+                        case Direction.Up:
+                            OffsetY -= 5;
+                            break;
+                        case Direction.Right:
+                            OffsetX += 5;
+                            break;
+                    }
                 }
+                Form1.formPointer.Invalidate();
             }
-            Form1.formPointer.Invalidate();
         }
 
         void ChooseDirection()
@@ -86,6 +91,11 @@ namespace BomberCore
             for (int i = 0; i < 4; i++)
                 if (Game.CanMove(this, dir[i]))
                     possibleMoves.Add(dir[i]);
+            if (possibleMoves.Count == 0)
+            {
+                currentDirection = Direction.None;
+                return;
+            }
             currentDirection = possibleMoves[new Random().Next(0, possibleMoves.Count)];
         }
 

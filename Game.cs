@@ -64,26 +64,30 @@ namespace BomberCore
 
         public static bool CanMove(GameObject gObject, Direction moveDir)
         {
+            Point destination = gObject.Position;
             switch(moveDir)
             {
                 case Direction.Down:
-                    if (gObject.Position.Y + 1 >= MapHeight || Map[gObject.Position.X, gObject.Position.Y + 1] is Wall)
-                        return false;
-                    return true;
+                    destination.Offset(0, 1);
+                    break;
                 case Direction.Left:
-                    if (gObject.Position.X - 1 < 0 || Map[gObject.Position.X - 1, gObject.Position.Y] is Wall)
-                        return false;
-                    return true;
+                    destination.Offset(-1, 0);
+                    break;
                 case Direction.Up:
-                    if (gObject.Position.Y - 1 < 0 || Map[gObject.Position.X, gObject.Position.Y - 1] is Wall)
-                        return false;
-                    return true;
+                    destination.Offset(0, -1);
+                    break;
                 case Direction.Right:
-                    if (gObject.Position.X + 1 >= MapWidth || Map[gObject.Position.X + 1, gObject.Position.Y] is Wall)
-                        return false;
-                    return true;
+                    destination.Offset(1, 0);
+                    break;
             }
-            return false;
+
+            if (destination.X < 0 || destination.X >= MapWidth || destination.Y < 0 || destination.Y >= MapHeight)
+                return false;
+            if (Map[destination] is Wall)
+                return false;
+            if (gObject is Monster && Map[destination] is Monster)
+                return false;
+            return true;
         }
 
         public static bool Playing      { get; private set; }
