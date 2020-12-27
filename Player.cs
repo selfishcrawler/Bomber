@@ -105,7 +105,7 @@ namespace BomberCore
             if (!Game.CanMove(this, direction))
                 return;
             MoveAllowed = false;
-            Game.Map[position.X, position.Y] = null;
+            Game.Map[position] = null;
             switch (direction)
             {
                 case Direction.Down:
@@ -125,7 +125,7 @@ namespace BomberCore
                     position.X++;
                     break;
             }
-            Game.Map[position.X, position.Y] = this;
+            Game.Map[position] = this;
             currentDirection = direction;
 
             animationTimer.Start();

@@ -23,6 +23,8 @@ namespace BomberCore
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            if (!Game.Playing)
+                return;
             for (int y = 0; y < Game.MapHeight; y++)
                 for (int x = 0; x < Game.MapWidth; x++)
                     e.Graphics.DrawImage(Properties.Resources.Grass, new Point(x * size, y * size));
@@ -51,8 +53,6 @@ namespace BomberCore
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!Game.Playing)
-                return;
             switch (e.KeyCode)
             {
                 case Keys.S:

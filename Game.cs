@@ -43,11 +43,11 @@ namespace BomberCore
             Player = new Player();
             map = new GameObject[,]
             {
-                { null, null, null, null, null },
+                { new Monster(), null, null, null, null },
                 { null, Player, null, new Wall(true), new Wall(false) },
                 { null, null, new Wall(false), null, null },
                 { null, null, null, null, null },
-                { null, null, null, null, null },
+                { null, null, null, null, new Monster() },
             };
             Playing = true;
         }
@@ -83,10 +83,11 @@ namespace BomberCore
                         return false;
                     return true;
             }
-            return true;
+            return false;
         }
 
-        public static bool Playing { get; private set; }
+        public static bool Playing      { get; private set; }
+        public static Player Player     { get; private set; }
 
         public static int MapWidth
         {
@@ -95,12 +96,6 @@ namespace BomberCore
         public static int MapHeight
         {
             get => map.GetLength(0);
-        }
-
-        public static Player Player
-        {
-            get;
-            private set;
         }
     }
 }
