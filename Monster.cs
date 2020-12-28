@@ -20,8 +20,8 @@ namespace BomberCore
 
         public Monster()
         {
-            sprite = new Bitmap[4];
-            for (int i = 0; i < 4; i++)
+            sprite = new Bitmap[5];
+            for (int i = 0; i < 5; i++)
                 sprite[i] = Properties.Resources.Monster;
             sprite[0].RotateFlip(RotateFlipType.Rotate90FlipNone);
             sprite[1].RotateFlip(RotateFlipType.RotateNoneFlipX);
