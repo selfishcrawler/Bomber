@@ -125,6 +125,11 @@ namespace BomberCore
                     position.X++;
                     break;
             }
+            if (Game.Map[position] is Monster)
+            {
+                Destroy();
+                return;
+            }
             Game.Map[position] = this;
             currentDirection = direction;
 
