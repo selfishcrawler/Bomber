@@ -7,18 +7,26 @@ namespace BomberCore
 {
     class Monster : GameObject
     {
-        public Bitmap Picture { get => Properties.Resources.Monster; }
+        public Bitmap Picture { get => sprite[(int)currentDirection]; }
 
         public int OffsetX      { get; private set; }
         public int OffsetY      { get; private set; }
         public Point Position   { get => position;  }
 
+        Bitmap[] sprite;
         Point position;
         Direction currentDirection;
         Timer moveTimer;
 
         public Monster()
         {
+            sprite = new Bitmap[4];
+            for (int i = 0; i < 4; i++)
+                sprite[i] = Properties.Resources.Monster;
+            sprite[0].RotateFlip(RotateFlipType.Rotate90FlipNone);
+            sprite[1].RotateFlip(RotateFlipType.RotateNoneFlipX);
+            sprite[2].RotateFlip(RotateFlipType.Rotate270FlipNone);
+
             OffsetX = OffsetY = 0;
             currentDirection = Direction.None;
             moveTimer = new Timer(10);
